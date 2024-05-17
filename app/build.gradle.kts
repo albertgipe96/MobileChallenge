@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.org.jetbrains.kotlin.kapt)
+    alias(libs.plugins.googleDaggerHiltAndroid)
 }
 
 android {
@@ -70,4 +72,12 @@ dependencies {
 
     // Timber - Logging
     implementation(libs.timber)
+
+    // Hilt - Dependency Injection
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+}
+
+kapt {
+    correctErrorTypes = true
 }
