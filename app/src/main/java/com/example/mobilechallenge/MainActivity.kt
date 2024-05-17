@@ -4,19 +4,24 @@ import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.mobilechallenge.common.ui.navigation.BottomNavigationBar
+import com.example.mobilechallenge.common.ui.navigation.Destination
+import com.example.mobilechallenge.common.ui.navigation.NavigationHost
 import com.example.mobilechallenge.common.ui.navigation.NavigationIntent
+import com.example.mobilechallenge.common.ui.navigation.composable
+import com.example.mobilechallenge.ui.theme.M100
 import com.example.mobilechallenge.ui.theme.MobileChallengeTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.Channel
@@ -43,6 +48,30 @@ fun MainScreen() {
         navHostController = navController
     )
 
+    MobileChallengeTheme {
+        Scaffold(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(M100),
+            bottomBar = { BottomNavigationBar(navController = navController) }
+        ) { paddingValues ->
+            NavigationHost(
+                navController = navController,
+                startDestination = Destination.HomeScreen,
+                modifier = Modifier.padding(paddingValues)
+            ) {
+                composable(destination = Destination.HomeScreen) {
+                    Text(text = it.destination.route ?: "")
+                }
+                composable(destination = Destination.ProductsScreen) {
+                    Text(text = it.destination.route ?: "")
+                }
+                composable(destination = Destination.PurchasesScreen) {
+                    Text(text = it.destination.route ?: "")
+                }
+            }
+        }
+    }
 }
 
 @Composable

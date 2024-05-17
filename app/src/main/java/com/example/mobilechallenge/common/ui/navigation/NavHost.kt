@@ -8,10 +8,11 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
 @Composable
-fun NavHost(
+fun NavigationHost(
     navController: NavHostController,
     startDestination: Destination,
     modifier: Modifier = Modifier,
@@ -20,7 +21,7 @@ fun NavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination,
+        startDestination = startDestination.fullRoute,
         modifier = modifier,
         route = route,
         builder = builder
