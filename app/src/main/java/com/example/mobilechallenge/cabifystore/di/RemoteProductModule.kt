@@ -1,5 +1,6 @@
 package com.example.mobilechallenge.cabifystore.di
 
+import com.example.mobilechallenge.cabifystore.data.mappers.ProductDataMapper
 import com.example.mobilechallenge.cabifystore.data.remote.ProductsApi
 import com.example.mobilechallenge.cabifystore.data.remote.dataSource.RemoteProductDataSource
 import com.example.mobilechallenge.cabifystore.data.remote.dataSource.RemoteProductDataSourceImpl
@@ -15,7 +16,14 @@ object RemoteProductModule {
 
     @Provides
     @ViewModelScoped
-    fun providesRemoteProductDataSource(productsApi: ProductsApi): RemoteProductDataSource =
-        RemoteProductDataSourceImpl(productsApi)
+    fun providesRemoteProductDataSource(
+        productsApi: ProductsApi,
+        productDataMapper: ProductDataMapper
+    ): RemoteProductDataSource =
+        RemoteProductDataSourceImpl(productsApi, productDataMapper)
+
+    @Provides
+    @ViewModelScoped
+    fun providesProductDataMapper() = ProductDataMapper()
 
 }

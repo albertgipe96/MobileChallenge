@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.mobilechallenge.cabifystore.presentation.screens.HomeScreen
 import com.example.mobilechallenge.common.ui.navigation.BottomNavigationBar
 import com.example.mobilechallenge.common.ui.navigation.Destination
 import com.example.mobilechallenge.common.ui.navigation.NavigationHost
@@ -62,6 +63,7 @@ fun MainScreen() {
             ) {
                 composable(destination = Destination.HomeScreen) {
                     Text(text = it.destination.route ?: "")
+                    HomeScreen()
                 }
                 composable(destination = Destination.ProductsScreen) {
                     Text(text = it.destination.route ?: "")
