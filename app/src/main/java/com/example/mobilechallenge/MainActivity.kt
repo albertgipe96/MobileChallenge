@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -13,10 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.mobilechallenge.cabifystore.presentation.screens.HomeScreen
+import com.example.mobilechallenge.cabifystore.presentation.screens.ProductsScreen
 import com.example.mobilechallenge.common.ui.navigation.BottomNavigationBar
 import com.example.mobilechallenge.common.ui.navigation.Destination
 import com.example.mobilechallenge.common.ui.navigation.NavigationHost
@@ -30,17 +32,26 @@ import kotlinx.coroutines.flow.receiveAsFlow
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val mainViewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen().setKeepOnScreenCondition {
+            mainViewModel.isSplashShow.value
+        }
         setContent {
-            MainScreen()
+            MainScreen(
+                mainViewModel = mainViewModel
+            )
         }
     }
 }
 
 @Composable
-fun MainScreen() {
-    val mainViewModel = hiltViewModel<MainViewModel>()
+fun MainScreen(
+    mainViewModel: MainViewModel
+) {
     val navController = rememberNavController()
 
     // With this handler, there is no need to pass any callbacks or navController

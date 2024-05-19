@@ -10,22 +10,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getProductsUseCase: GetProductsUseCase
+
 ) : BaseViewModel() {
 
-    init {
-        withUseCaseScope {
-            getProductsUseCase().resource
-                .onSuccess {
 
-                }
-                .onError {
-
-                }
-                .onException {
-
-                }
-        }
-    }
 
 }

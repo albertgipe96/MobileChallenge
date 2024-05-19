@@ -87,6 +87,9 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
     implementation(libs.kotlinx.coroutines.android)
+
+    // Splash Screen Api
+    implementation(libs.androidx.core.splashscreen)
 }
 
 kapt {
