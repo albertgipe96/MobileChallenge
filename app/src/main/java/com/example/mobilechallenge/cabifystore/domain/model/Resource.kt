@@ -6,24 +6,24 @@ sealed class Resource<T>() {
     class Exception<T>(val t: Throwable) : Resource<T>()
 }
 
-fun <T: Any> Resource<T>.onSuccess(
-    executable: (T) -> Unit
+suspend fun <T: Any> Resource<T>.onSuccess(
+    executable: suspend (T) -> Unit
 ): Resource<T> = apply {
     if (this is Resource.Success<T>) {
         executable(data)
     }
 }
 
-fun <T: Any> Resource<T>.onError(
-    executable: (errorMessage: String?) -> Unit
+suspend fun <T: Any> Resource<T>.onError(
+    executable: suspend (errorMessage: String?) -> Unit
 ): Resource<T> = apply {
     if (this is Resource.Error<T>) {
         executable(errorMessage)
     }
 }
 
-fun <T: Any> Resource<T>.onException(
-    executable: (t: Throwable) -> Unit
+suspend fun <T: Any> Resource<T>.onException(
+    executable: suspend (t: Throwable) -> Unit
 ): Resource<T> = apply {
     if (this is Resource.Exception<T>) {
         executable(t)

@@ -77,7 +77,7 @@ fun MainScreen(
                     HomeScreen()
                 }
                 composable(destination = Destination.ProductsScreen) {
-                    Text(text = it.destination.route ?: "")
+                    ProductsScreen()
                 }
                 composable(destination = Destination.PurchasesScreen) {
                     Text(text = it.destination.route ?: "")
