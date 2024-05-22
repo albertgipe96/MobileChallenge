@@ -20,7 +20,7 @@ import javax.inject.Inject
 sealed class ProductsScreenEvent {
     data object DismissQuantityModal : ProductsScreenEvent()
     data class ShowQuantityModal(val product: Product) : ProductsScreenEvent()
-    data class AddProductToCart(val product: Product) : ProductsScreenEvent()
+    data class AddProductToCart(val product: Product, val quantity: Int) : ProductsScreenEvent()
 }
 
 @HiltViewModel
@@ -56,7 +56,7 @@ class ProductsViewModel @Inject constructor(
                     showQuantityModal(event.product)
                 }
                 is ProductsScreenEvent.AddProductToCart -> {
-                    addToCart(event.product)
+                    addToCart(event.product, event.quantity)
                 }
             }
         }
@@ -72,9 +72,10 @@ class ProductsViewModel @Inject constructor(
         reduce { ProductsUiState.Loaded(products, product) }
     }
 
-    private fun addToCart(product: Product) {
+    private fun addToCart(product: Product, quantity: Int) {
         withUseCaseScope {
-            addProductToCartUseCase(AddProductToCartUseCase.RequestValues(product))
+            val productsToAdd = List(quantity) { product }
+            addProductToCartUseCase(AddProductToCartUseCase.RequestValues(productsToAdd))
                 .resource
                 .onSuccess {
                     Timber.d("Product added to cart")

@@ -10,7 +10,7 @@ import javax.inject.Provider
 
 interface LocalProductDataSource {
     suspend fun getCartProducts(): Resource<List<CartProduct>>
-    suspend fun addProductToCart(product: Product): Resource<Unit>
+    suspend fun addProductToCart(product: List<Product>): Resource<Unit>
 }
 
 class LocalProductDataSourceImpl @Inject constructor(
@@ -28,9 +28,13 @@ class LocalProductDataSourceImpl @Inject constructor(
         return Resource.Success(products)
     }
 
-    override suspend fun addProductToCart(product: Product): Resource<Unit> = with(productDataMapper) {
-        val result = cartProductDao.addNewProduct(product.toCartProductEntity())
-        return if (result != -1L) {
+    override suspend fun addProductToCart(product: List<Product>): Resource<Unit> = with(productDataMapper) {
+        var success = true
+        product.forEach {
+            val result = cartProductDao.addNewProduct(it.toCartProductEntity())
+            if (result == -1L) success = false
+        }
+        return if (success) {
             Resource.Success(Unit)
         } else {
             Resource.Error("Couldn't insert to database")

@@ -21,7 +21,7 @@ class ProductsRepositoryImpl @Inject constructor(
         return localProductDataSource.getCartProducts()
     }
 
-    override suspend fun addProductToCart(product: Product): Resource<Unit> {
+    override suspend fun addProductToCart(product: List<Product>): Resource<Unit> {
         return localProductDataSource.addProductToCart(product)
     }
 

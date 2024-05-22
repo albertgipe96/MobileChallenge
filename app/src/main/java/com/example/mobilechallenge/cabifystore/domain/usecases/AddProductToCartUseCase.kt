@@ -11,13 +11,13 @@ class AddProductToCartUseCase @Inject constructor(
 
     override suspend fun invoke(requestValues: RequestValues?): ResponseValue {
         return requestValues?.let { requestVal ->
-            val addProductResource = productsRepository.addProductToCart(requestVal.product)
+            val addProductResource = productsRepository.addProductToCart(requestVal.products)
             return ResponseValue(addProductResource)
         } ?: ResponseValue(Resource.Error("Couldn't add the product to the cart"))
 
     }
 
-    class RequestValues(val product: Product) : UseCase.RequestValues
+    class RequestValues(val products: List<Product>) : UseCase.RequestValues
     class ResponseValue(val resource: Resource<Unit>) : UseCase.ResponseValue
 
 }

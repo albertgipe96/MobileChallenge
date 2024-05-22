@@ -7,5 +7,5 @@ import com.example.mobilechallenge.cabifystore.domain.model.Resource
 interface ProductsRepository {
     suspend fun getProducts(): Resource<List<Product>>
     suspend fun getCartProducts(): Resource<List<CartProduct>>
-    suspend fun addProductToCart(product: Product): Resource<Unit>
+    suspend fun addProductToCart(product: List<Product>): Resource<Unit>
 }

@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.mobilechallenge.cabifystore.domain.model.Product
 import com.example.mobilechallenge.cabifystore.domain.model.getImageResByProductCode
+import com.example.mobilechallenge.common.ui.components.CabifyButton
 import com.example.mobilechallenge.ui.theme.M100
 import com.example.mobilechallenge.ui.theme.M800
 import com.example.mobilechallenge.ui.utils.Shape
@@ -52,9 +53,10 @@ fun ProductCard(
         ) {
             Text(text = product.name)
             Text(text = "${product.price}€")
-            Button(onClick = { onPurchase() }) {
-                Text(text = "Add to cart")
-            }
+            CabifyButton(
+                text = "Add to cart",
+                onClick = { onPurchase() }
+            )
         }
     }
 }
