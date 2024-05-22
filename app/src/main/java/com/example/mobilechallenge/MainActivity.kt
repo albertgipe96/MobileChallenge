@@ -12,6 +12,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -19,13 +21,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.mobilechallenge.cabifystore.presentation.screens.HomeScreen
 import com.example.mobilechallenge.cabifystore.presentation.screens.ProductsScreen
+import com.example.mobilechallenge.common.ui.components.BottomModal
+import com.example.mobilechallenge.common.ui.components.FloatingActionButton
 import com.example.mobilechallenge.common.ui.navigation.BottomNavigationBar
 import com.example.mobilechallenge.common.ui.navigation.Destination
 import com.example.mobilechallenge.common.ui.navigation.NavigationHost
 import com.example.mobilechallenge.common.ui.navigation.NavigationIntent
 import com.example.mobilechallenge.common.ui.navigation.composable
+import com.example.mobilechallenge.common.ui.state.collectWithLifecycle
 import com.example.mobilechallenge.ui.theme.M100
 import com.example.mobilechallenge.ui.theme.MobileChallengeTheme
+import com.example.mobilechallenge.ui.utils.Icons
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -61,11 +67,18 @@ fun MainScreen(
     )
 
     MobileChallengeTheme {
+        val uiState by mainViewModel.collectWithLifecycle()
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
                 .background(M100),
-            bottomBar = { BottomNavigationBar(navController = navController) }
+            bottomBar = { BottomNavigationBar(navController = navController) },
+            floatingActionButton = {
+                FloatingActionButton(
+                    icon = Icons.CART,
+                    onClick = { mainViewModel.onEvent(MainScreenEvent.ShowCartModal) }
+                )
+            }
         ) { paddingValues ->
             NavigationHost(
                 navController = navController,
@@ -83,6 +96,22 @@ fun MainScreen(
                     Text(text = it.destination.route ?: "")
                 }
             }
+
+            // Bottom Sheet section starts ---------------------------------------------------------
+            when (val state = uiState) {
+                MainUiState.Idle -> {}
+                is MainUiState.ShowCart -> {
+                    BottomModal(
+                        onDismiss = { mainViewModel.onEvent(MainScreenEvent.DismissModal) }
+                    ) {
+                        state.cartProducts.forEach {
+                            Text(text = it.name)
+                        }
+
+                    }
+                }
+            }
+            // Bottom Sheet section ends -----------------------------------------------------------
         }
     }
 }
