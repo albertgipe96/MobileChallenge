@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mobilechallenge.cabifystore.presentation.components.ProductCard
 import com.example.mobilechallenge.cabifystore.presentation.uistate.ProductsUiState
+import com.example.mobilechallenge.cabifystore.presentation.vm.ProductsScreenEvent
 import com.example.mobilechallenge.cabifystore.presentation.vm.ProductsViewModel
 import com.example.mobilechallenge.common.ui.components.TopBar
 import com.example.mobilechallenge.common.ui.state.collectWithLifecycle
@@ -58,7 +59,7 @@ fun ProductsScreen(
                     state.products.forEach { product ->
                         ProductCard(
                             product = product,
-                            onPurchase = {  }
+                            onPurchase = { viewModel.onEvent(ProductsScreenEvent.AddProductToCart(product)) }
                         )
                         Spacer(modifier = Modifier.height(Spacing.MEDIUM.spacing))
                     }

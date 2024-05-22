@@ -16,9 +16,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.mobilechallenge.R
 import com.example.mobilechallenge.cabifystore.domain.model.Product
-import com.example.mobilechallenge.cabifystore.domain.model.getImageResByProduct
+import com.example.mobilechallenge.cabifystore.domain.model.getImageResByProductCode
 import com.example.mobilechallenge.ui.theme.M100
 import com.example.mobilechallenge.ui.theme.M800
 import com.example.mobilechallenge.ui.utils.Shape
@@ -42,7 +41,7 @@ fun ProductCard(
                 .weight(1f)
                 .clip(Shape.large.shape)
                 .border(1.dp, M800, Shape.large.shape),
-            painter = painterResource(id = product.getImageResByProduct()),
+            painter = painterResource(id = product.code.getImageResByProductCode()),
             contentDescription = null,
             contentScale = ContentScale.Crop
         )

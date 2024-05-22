@@ -1,5 +1,6 @@
 package com.example.mobilechallenge.cabifystore.di
 
+import com.example.mobilechallenge.cabifystore.data.local.dataSource.LocalProductDataSource
 import com.example.mobilechallenge.cabifystore.data.remote.dataSource.RemoteProductDataSource
 import com.example.mobilechallenge.cabifystore.data.repositories.ProductsRepositoryImpl
 import com.example.mobilechallenge.cabifystore.domain.repositories.ProductsRepository
@@ -15,7 +16,10 @@ object RepositoriesModule {
 
     @Provides
     @ViewModelScoped
-    fun providesProductsRepository(remoteProductDataSource: RemoteProductDataSource): ProductsRepository =
-        ProductsRepositoryImpl(remoteProductDataSource)
+    fun providesProductsRepository(
+        remoteProductDataSource: RemoteProductDataSource,
+        localProductDataSource: LocalProductDataSource
+    ): ProductsRepository =
+        ProductsRepositoryImpl(remoteProductDataSource, localProductDataSource)
 
 }

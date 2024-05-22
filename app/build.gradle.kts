@@ -93,6 +93,10 @@ dependencies {
 
     // Splash Screen Api
     implementation(libs.androidx.core.splashscreen)
+
+    // Room Database
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
 }
 
 kapt {
