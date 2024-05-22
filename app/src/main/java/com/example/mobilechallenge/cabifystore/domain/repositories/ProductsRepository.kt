@@ -8,4 +8,5 @@ interface ProductsRepository {
     suspend fun getProducts(): Resource<List<Product>>
     suspend fun getCartProducts(): Resource<List<CartProduct>>
     suspend fun addProductToCart(product: List<Product>): Resource<Unit>
+    suspend fun emptyCart(): Resource<Unit>
 }

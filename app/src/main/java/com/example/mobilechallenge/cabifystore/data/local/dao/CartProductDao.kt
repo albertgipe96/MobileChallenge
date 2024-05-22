@@ -17,4 +17,7 @@ interface CartProductDao {
     @Query("DELETE FROM cartProducts WHERE id = :id")
     fun deleteProductFromCart(id: Int): Int
 
+    @Query("DELETE FROM cartProducts")
+    fun deleteAllProductsFromCart(): Int
+
 }

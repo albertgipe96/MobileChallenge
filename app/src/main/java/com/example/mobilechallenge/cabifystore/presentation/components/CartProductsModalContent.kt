@@ -51,7 +51,7 @@ fun CartProductsModalContent(
                             text = cartProduct.name
                         )
                         Text(
-                            text = "${cartProduct.realPrice}€"
+                            text = "${cartProduct.price}€"
                         )
                     }
                 }
@@ -68,7 +68,7 @@ fun CartProductsModalContent(
             horizontalArrangement = Arrangement.End
         ) {
             CabifyButton(
-                text = "Add to cart",
+                text = "Purchase",
                 onClick = onPurchaseCart
             )
         }

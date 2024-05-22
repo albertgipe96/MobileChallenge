@@ -11,6 +11,7 @@ import javax.inject.Provider
 interface LocalProductDataSource {
     suspend fun getCartProducts(): Resource<List<CartProduct>>
     suspend fun addProductToCart(product: List<Product>): Resource<Unit>
+    suspend fun emptyCart(): Resource<Unit>
 }
 
 class LocalProductDataSourceImpl @Inject constructor(
@@ -40,4 +41,10 @@ class LocalProductDataSourceImpl @Inject constructor(
             Resource.Error("Couldn't insert to database")
         }
     }
+
+    override suspend fun emptyCart(): Resource<Unit> {
+        cartProductDao.deleteAllProductsFromCart()
+        return Resource.Success(Unit)
+    }
+
 }

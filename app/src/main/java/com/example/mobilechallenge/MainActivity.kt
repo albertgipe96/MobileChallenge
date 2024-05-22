@@ -21,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.mobilechallenge.cabifystore.presentation.components.CartProductsModalContent
 import com.example.mobilechallenge.cabifystore.presentation.screens.HomeScreen
 import com.example.mobilechallenge.cabifystore.presentation.screens.ProductsScreen
+import com.example.mobilechallenge.cabifystore.presentation.screens.PurchasesScreen
 import com.example.mobilechallenge.common.ui.components.BottomModal
 import com.example.mobilechallenge.common.ui.components.FloatingActionButton
 import com.example.mobilechallenge.common.ui.navigation.BottomNavigationBar
@@ -93,7 +94,7 @@ fun MainScreen(
                     ProductsScreen()
                 }
                 composable(destination = Destination.PurchasesScreen) {
-                    Text(text = it.destination.route ?: "")
+                    PurchasesScreen()
                 }
             }
 

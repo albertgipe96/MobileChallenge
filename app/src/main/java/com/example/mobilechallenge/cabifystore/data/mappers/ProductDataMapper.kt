@@ -22,8 +22,7 @@ class ProductDataMapper @Inject constructor() {
             id = id,
             code = ProductCode.valueOf(code),
             name = name,
-            realPrice = price,
-            discountedPrice = null
+            price = price
         )
     }
 

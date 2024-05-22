@@ -4,6 +4,5 @@ data class CartProduct(
     val id: Int,
     val code: ProductCode,
     val name: String,
-    val realPrice: Double,
-    val discountedPrice: Double?
+    val price: Double
 )

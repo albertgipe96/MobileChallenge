@@ -6,6 +6,8 @@ import com.example.mobilechallenge.cabifystore.domain.model.CartProduct
 import com.example.mobilechallenge.cabifystore.domain.model.onError
 import com.example.mobilechallenge.cabifystore.domain.model.onException
 import com.example.mobilechallenge.cabifystore.domain.model.onSuccess
+import com.example.mobilechallenge.cabifystore.domain.usecases.AddNewPurchaseUseCase
+import com.example.mobilechallenge.cabifystore.domain.usecases.EmptyCartUseCase
 import com.example.mobilechallenge.cabifystore.domain.usecases.GetCartProductsUseCase
 import com.example.mobilechallenge.common.ui.navigation.AppNavigator
 import com.example.mobilechallenge.common.ui.navigation.NavigationIntent
@@ -41,7 +43,9 @@ sealed class MainScreenEvent {
 @HiltViewModel
 class MainViewModel @Inject constructor(
     val appNavigator: AppNavigator,
-    private val getCartProductsUseCase: GetCartProductsUseCase
+    private val getCartProductsUseCase: GetCartProductsUseCase,
+    private val addNewPurchaseUseCase: AddNewPurchaseUseCase,
+    private val emptyCartUseCase: EmptyCartUseCase
 ) : ViewModel(), ViewStateDelegate<MainUiState, MainEvent> by ViewStateDelegateImpl(MainUiState.Idle) {
 
     private val splashShowFlow = MutableStateFlow(true)
@@ -75,7 +79,20 @@ class MainViewModel @Inject constructor(
 
                 }
                 is MainScreenEvent.PurchaseCart -> {
-
+                    var totalPrice = 0.0
+                    event.cartProducts.forEach {
+                        totalPrice += it.price
+                    }
+                    addNewPurchaseUseCase(AddNewPurchaseUseCase.RequestValues(totalPrice)).resource
+                        .onSuccess {
+                            emptyCartUseCase().resource
+                                .onSuccess {
+                                    onEvent(MainScreenEvent.DismissModal)
+                                }
+                        }
+                        .onError { message ->
+                            Timber.e("Error purchasing cart products: $message")
+                        }
                 }
             }
         }
