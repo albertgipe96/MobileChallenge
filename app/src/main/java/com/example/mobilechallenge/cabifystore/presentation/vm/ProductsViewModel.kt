@@ -1,5 +1,6 @@
 package com.example.mobilechallenge.cabifystore.presentation.vm
 
+import androidx.lifecycle.viewModelScope
 import com.example.mobilechallenge.cabifystore.domain.model.Product
 import com.example.mobilechallenge.cabifystore.domain.model.onError
 import com.example.mobilechallenge.cabifystore.domain.model.onException
@@ -12,10 +13,13 @@ import com.example.mobilechallenge.common.presentation.vm.BaseViewModel
 import com.example.mobilechallenge.common.ui.state.ViewStateDelegate
 import com.example.mobilechallenge.common.ui.state.ViewStateDelegateImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
 sealed class ProductsScreenEvent {
+    data object DismissQuantityModal : ProductsScreenEvent()
+    data class ShowQuantityModal(val product: Product) : ProductsScreenEvent()
     data class AddProductToCart(val product: Product) : ProductsScreenEvent()
 }
 
@@ -23,13 +27,15 @@ sealed class ProductsScreenEvent {
 class ProductsViewModel @Inject constructor(
     private val getProductsUseCase: GetProductsUseCase,
     private val addProductToCartUseCase: AddProductToCartUseCase
-) : BaseViewModel(), ViewStateDelegate<ProductsUiState, ProductsEvent> by ViewStateDelegateImpl(ProductsUiState.Loading) {
+) : BaseViewModel(),
+    ViewStateDelegate<ProductsUiState, ProductsEvent> by ViewStateDelegateImpl(ProductsUiState.Loading)
+{
 
     init {
         withUseCaseScope {
             getProductsUseCase().resource
                 .onSuccess { products ->
-                    reduce { ProductsUiState.Loaded(products) }
+                    reduce { ProductsUiState.Loaded(products, null) }
                 }
                 .onError { message ->
                     reduce { ProductsUiState.Error(message ?: "Error") }
@@ -41,11 +47,29 @@ class ProductsViewModel @Inject constructor(
     }
 
     fun onEvent(event: ProductsScreenEvent) {
-        when (event) {
-            is ProductsScreenEvent.AddProductToCart -> {
-                addToCart(event.product)
+        viewModelScope.launch {
+            when (event) {
+                is ProductsScreenEvent.DismissQuantityModal -> {
+                    dismissQuantityModal()
+                }
+                is ProductsScreenEvent.ShowQuantityModal -> {
+                    showQuantityModal(event.product)
+                }
+                is ProductsScreenEvent.AddProductToCart -> {
+                    addToCart(event.product)
+                }
             }
         }
+    }
+
+    private suspend fun dismissQuantityModal() {
+        val products = (stateValue as ProductsUiState.Loaded).products
+        reduce { ProductsUiState.Loaded(products, null) }
+    }
+
+    private suspend fun showQuantityModal(product: Product) {
+        val products = (stateValue as ProductsUiState.Loaded).products
+        reduce { ProductsUiState.Loaded(products, product) }
     }
 
     private fun addToCart(product: Product) {
@@ -54,6 +78,8 @@ class ProductsViewModel @Inject constructor(
                 .resource
                 .onSuccess {
                     Timber.d("Product added to cart")
+                    val products = (stateValue as ProductsUiState.Loaded).products
+                    reduce { ProductsUiState.Loaded(products, null) }
                 }
                 .onError { message ->
                     Timber.e("Couldn't add product to cart: $message")
