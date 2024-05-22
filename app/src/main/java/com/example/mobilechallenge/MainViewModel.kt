@@ -35,6 +35,7 @@ sealed interface MainEvent {
 sealed class MainScreenEvent {
     data object DismissModal : MainScreenEvent()
     data object ShowCartModal : MainScreenEvent()
+    data class PurchaseCart(val cartProducts: List<CartProduct>) : MainScreenEvent()
 }
 
 @HiltViewModel
@@ -71,6 +72,9 @@ class MainViewModel @Inject constructor(
                         .onException { t ->
                             Timber.e("Error loading cart products: ${t.message}")
                         }
+
+                }
+                is MainScreenEvent.PurchaseCart -> {
 
                 }
             }

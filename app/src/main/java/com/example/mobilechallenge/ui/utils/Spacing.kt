@@ -9,5 +9,6 @@ enum class Spacing(val spacing: Dp) {
     SMALL_MEDIUM(spacing = 12.dp),
     MEDIUM(spacing = 16.dp),
     MEDIUM_LARGE(spacing = 24.dp),
-    LARGE(spacing = 32.dp)
+    LARGE(spacing = 32.dp),
+    EXTRA_LARGE(spacing = 48.dp)
 }
