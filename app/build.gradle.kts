@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.org.jetbrains.kotlin.kapt)
     alias(libs.plugins.googleDaggerHiltAndroid)
+    alias(libs.plugins.googleGmsGoogleServices)
 }
 
 android {
@@ -97,6 +98,11 @@ dependencies {
     // Room Database
     implementation(libs.androidx.room.ktx)
     kapt(libs.androidx.room.compiler)
+
+    // Firebase bom
+    implementation(libs.firebase.bom)
+    implementation(libs.firebase.common.ktx)
+    implementation(libs.firebase.config.ktx)
 }
 
 kapt {

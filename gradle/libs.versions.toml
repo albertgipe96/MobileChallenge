@@ -1,6 +1,7 @@
 [versions]
 agp = "8.3.0-rc01"
 coreSplashscreen = "1.0.1"
+firebaseBom = "33.0.0"
 hilt = "2.48"
 hiltNavigationCompose = "1.2.0"
 hiltNavigationFragment = "1.0.0"
@@ -20,6 +21,9 @@ roomKtx = "2.6.1"
 timber = "5.0.1"
 daggerHiltPlugin = "2.48"
 org-jetbrains-kotlin-android = "1.8.0"
+googleServices = "4.4.1"
+firebaseCommonKtx = "21.0.0"
+firebaseConfigKtx = "22.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,6 +36,7 @@ androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-view
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtx" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -52,10 +57,13 @@ logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", ver
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version.ref = "firebaseCommonKtx" }
+firebase-config-ktx = { group = "com.google.firebase", name = "firebase-config-ktx", version.ref = "firebaseConfigKtx" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "org-jetbrains-kotlin-android" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 googleDaggerHiltAndroid = { id = "com.google.dagger.hilt.android", version.ref = "daggerHiltPlugin" }
+googleGmsGoogleServices = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 

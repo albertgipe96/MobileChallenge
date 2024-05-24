@@ -2,9 +2,12 @@ package com.example.mobilechallenge.cabifystore.di
 
 import com.example.mobilechallenge.cabifystore.data.local.dataSource.LocalProductDataSource
 import com.example.mobilechallenge.cabifystore.data.local.dataSource.LocalPurchaseDataSource
+import com.example.mobilechallenge.cabifystore.data.remote.dataSource.RemoteConfigProvider
 import com.example.mobilechallenge.cabifystore.data.remote.dataSource.RemoteProductDataSource
+import com.example.mobilechallenge.cabifystore.data.repositories.OffersRepositoryImpl
 import com.example.mobilechallenge.cabifystore.data.repositories.ProductsRepositoryImpl
 import com.example.mobilechallenge.cabifystore.data.repositories.PurchasesRepositoryImpl
+import com.example.mobilechallenge.cabifystore.domain.repositories.OffersRepository
 import com.example.mobilechallenge.cabifystore.domain.repositories.ProductsRepository
 import com.example.mobilechallenge.cabifystore.domain.repositories.PurchasesRepository
 import dagger.Module
@@ -31,5 +34,12 @@ object RepositoriesModule {
         localPurchaseDataSource: LocalPurchaseDataSource
     ): PurchasesRepository =
         PurchasesRepositoryImpl(localPurchaseDataSource)
+
+    @Provides
+    @ViewModelScoped
+    fun providesOffersRepository(
+        remoteConfigProvider: RemoteConfigProvider
+    ): OffersRepository =
+        OffersRepositoryImpl(remoteConfigProvider)
 
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>offers</key>
+        <value>{"offers":[{"productCode":"TSHIRT","quantityToGetOneFree":null,"discount":{"quantity":3,"orMore":true,"discountedPrice":19}},{"productCode":"VOUCHER","quantityToGetOneFree":"2","discount":null}]}</value>
+    </entry>
+</defaultsMap>
