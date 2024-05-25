@@ -1,5 +1,6 @@
 package com.example.mobilechallenge.cabifystore.domain.usecases
 
+import com.example.mobilechallenge.cabifystore.domain.model.CartProduct
 import com.example.mobilechallenge.cabifystore.domain.model.Product
 import com.example.mobilechallenge.cabifystore.domain.model.Resource
 import com.example.mobilechallenge.cabifystore.domain.repositories.ProductsRepository
@@ -11,13 +12,13 @@ class RemoveProductFromCartUseCase @Inject constructor(
 
     override suspend fun invoke(requestValues: RequestValues?): ResponseValue {
         return requestValues?.let { requestVal ->
-            val addProductResource = productsRepository.addProductToCart(requestVal.products)
-            return ResponseValue(addProductResource)
-        } ?: ResponseValue(Resource.Error("Couldn't add the product to the cart"))
+            val removeProductResource = productsRepository.removeProductFromCart(requestVal.cartProduct)
+            return ResponseValue(removeProductResource)
+        } ?: ResponseValue(Resource.Error("Couldn't remove the product from the cart"))
 
     }
 
-    class RequestValues(val products: List<Product>) : UseCase.RequestValues
+    class RequestValues(val cartProduct: CartProduct) : UseCase.RequestValues
     class ResponseValue(val resource: Resource<Unit>) : UseCase.ResponseValue
 
 }

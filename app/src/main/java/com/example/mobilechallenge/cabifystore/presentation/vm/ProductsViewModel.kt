@@ -2,7 +2,6 @@ package com.example.mobilechallenge.cabifystore.presentation.vm
 
 import androidx.lifecycle.viewModelScope
 import com.example.mobilechallenge.cabifystore.domain.model.Product
-import com.example.mobilechallenge.cabifystore.domain.model.ProductCode
 import com.example.mobilechallenge.cabifystore.domain.model.onError
 import com.example.mobilechallenge.cabifystore.domain.model.onException
 import com.example.mobilechallenge.cabifystore.domain.model.onSuccess

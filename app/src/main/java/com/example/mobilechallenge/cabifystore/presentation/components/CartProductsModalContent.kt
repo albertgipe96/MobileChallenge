@@ -1,6 +1,7 @@
 package com.example.mobilechallenge.cabifystore.presentation.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,7 +29,8 @@ import com.example.mobilechallenge.ui.utils.Spacing
 fun CartProductsModalContent(
     cartProductsMap: Map<ProductCode, List<CartProduct>>,
     totalPrice: Double,
-    onPurchaseCart: () -> Unit
+    onPurchaseCart: () -> Unit,
+    onRemoveCartProduct: (CartProduct) -> Unit
 ) {
     Column(modifier = Modifier.padding(Spacing.MEDIUM.spacing)) {
         cartProductsMap.forEach { map ->
@@ -51,10 +54,17 @@ fun CartProductsModalContent(
                         text = cartProduct.name
                     )
                 }
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(verticalArrangement = Arrangement.Center) {
                     Text(
                         text = "x$quantity",
                         fontSize = 20.sp
+                    )
+                    Spacer(modifier = Modifier.height(Spacing.MEDIUM.spacing))
+                    Text(
+                        modifier = Modifier.clickable { onRemoveCartProduct(cartProduct) },
+                        text = "Remove item",
+                        fontSize = 12.sp,
+                        color = Color.Red
                     )
                 }
             }

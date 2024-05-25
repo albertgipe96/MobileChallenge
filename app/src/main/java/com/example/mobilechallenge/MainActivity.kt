@@ -108,7 +108,8 @@ fun MainScreen(
                         CartProductsModalContent(
                             cartProductsMap = state.cartProducts.groupBy { it.code },
                             totalPrice = state.totalPrice,
-                            onPurchaseCart = { mainViewModel.onEvent(MainScreenEvent.PurchaseCart(state.totalPrice)) }
+                            onPurchaseCart = { mainViewModel.onEvent(MainScreenEvent.PurchaseCart(state.totalPrice)) },
+                            onRemoveCartProduct = { mainViewModel.onEvent(MainScreenEvent.RemoveProductFromCart(it)) }
                         )
                     }
                 }
