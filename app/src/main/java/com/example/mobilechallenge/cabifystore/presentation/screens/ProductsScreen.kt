@@ -13,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -74,6 +75,7 @@ fun ProductsScreen(
         // Bottom Sheet section starts ---------------------------------------------------------
         if (uiState is ProductsUiState.Loaded && (uiState as? ProductsUiState.Loaded)?.showingProductModal != null) {
             val productToAdd = (uiState as ProductsUiState.Loaded).showingProductModal!!
+            val newPrice = (uiState as ProductsUiState.Loaded).newPriceShown
             var quantity by remember { mutableIntStateOf(1) }
             BottomModal(
                 onDismiss = { viewModel.onEvent(ProductsScreenEvent.DismissQuantityModal) }
@@ -81,8 +83,17 @@ fun ProductsScreen(
                 AddProductModalContent(
                     productToAdd = productToAdd,
                     quantity = quantity,
-                    onAddSelected = { quantity += 1 },
-                    onRemoveSelected = { if (quantity > 1) quantity -= 1 },
+                    bestPrice = newPrice,
+                    onAddSelected = {
+                        quantity += 1
+                        viewModel.onEvent(ProductsScreenEvent.ComputeLowestPrice(productToAdd, quantity))
+                    },
+                    onRemoveSelected = {
+                        if (quantity > 1) {
+                            quantity -= 1
+                            viewModel.onEvent(ProductsScreenEvent.ComputeLowestPrice(productToAdd, quantity))
+                        }
+                    },
                     onPurchase = { viewModel.onEvent(ProductsScreenEvent.AddProductToCart(productToAdd, quantity)) }
                 )
             }

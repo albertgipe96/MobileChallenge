@@ -26,6 +26,7 @@ import com.example.mobilechallenge.ui.utils.Spacing
 @Composable
 fun CartProductsModalContent(
     cartProductsMap: Map<ProductCode, List<CartProduct>>,
+    totalPrice: Double,
     onPurchaseCart: () -> Unit
 ) {
     Column(modifier = Modifier.padding(Spacing.MEDIUM.spacing)) {
@@ -46,14 +47,9 @@ fun CartProductsModalContent(
                         contentDescription = null
                     )
                     Spacer(modifier = Modifier.width(Spacing.MEDIUM.spacing))
-                    Column {
-                        Text(
-                            text = cartProduct.name
-                        )
-                        Text(
-                            text = "${cartProduct.price}€"
-                        )
-                    }
+                    Text(
+                        text = cartProduct.name
+                    )
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
@@ -67,6 +63,11 @@ fun CartProductsModalContent(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
+            Text(
+                text = "Total price: ${totalPrice}€",
+                fontSize = 20.sp
+            )
+            Spacer(modifier = Modifier.width(Spacing.MEDIUM.spacing))
             CabifyButton(
                 text = "Purchase",
                 onClick = onPurchaseCart

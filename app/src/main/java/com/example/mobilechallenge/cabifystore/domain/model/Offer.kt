@@ -7,7 +7,6 @@ data class Offer(
 )
 
 data class QuantityDiscount(
-    val quantity: Int,
-    val orMore: Boolean,
+    val quantityOrMore: Int,
     val discountedPrice: Double
 )

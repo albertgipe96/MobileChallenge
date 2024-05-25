@@ -55,7 +55,7 @@ fun HomeScreen(
                     state.offers.forEach {
                         Text(text = "code: ${it.productCode}\n" +
                                 "quantityToGetOneFree: ${it.quantityToGetOneFree}\n" +
-                                "discount: ${it.discount?.quantity} orMore: ${it.discount?.orMore}, newPrice: ${it.discount?.discountedPrice}")
+                                "discount: ${it.discount?.quantityOrMore}, newPrice: ${it.discount?.discountedPrice}")
                         Spacer(modifier = Modifier.height(Spacing.MEDIUM.spacing))
                     }
                 }

@@ -6,8 +6,11 @@ import com.example.mobilechallenge.cabifystore.domain.model.CartProduct
 import com.example.mobilechallenge.cabifystore.domain.model.onError
 import com.example.mobilechallenge.cabifystore.domain.model.onException
 import com.example.mobilechallenge.cabifystore.domain.model.onSuccess
+import com.example.mobilechallenge.cabifystore.domain.model.toProduct
 import com.example.mobilechallenge.cabifystore.domain.usecases.AddNewPurchaseUseCase
+import com.example.mobilechallenge.cabifystore.domain.usecases.ComputeTotalPriceUseCase
 import com.example.mobilechallenge.cabifystore.domain.usecases.EmptyCartUseCase
+import com.example.mobilechallenge.cabifystore.domain.usecases.GetBestOfferUseCase
 import com.example.mobilechallenge.cabifystore.domain.usecases.GetCartProductsUseCase
 import com.example.mobilechallenge.common.ui.navigation.AppNavigator
 import com.example.mobilechallenge.common.ui.navigation.NavigationIntent
@@ -27,7 +30,7 @@ import javax.inject.Inject
 @Immutable
 sealed class MainUiState {
     data object Idle : MainUiState()
-    data class ShowCart(val cartProducts: List<CartProduct>) : MainUiState()
+    data class ShowCart(val cartProducts: List<CartProduct>, val totalPrice: Double) : MainUiState()
 }
 
 sealed interface MainEvent {
@@ -37,13 +40,14 @@ sealed interface MainEvent {
 sealed class MainScreenEvent {
     data object DismissModal : MainScreenEvent()
     data object ShowCartModal : MainScreenEvent()
-    data class PurchaseCart(val cartProducts: List<CartProduct>) : MainScreenEvent()
+    data class PurchaseCart(val totalPrice: Double) : MainScreenEvent()
 }
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     val appNavigator: AppNavigator,
     private val getCartProductsUseCase: GetCartProductsUseCase,
+    private val computeTotalPriceUseCase: ComputeTotalPriceUseCase,
     private val addNewPurchaseUseCase: AddNewPurchaseUseCase,
     private val emptyCartUseCase: EmptyCartUseCase
 ) : ViewModel(), ViewStateDelegate<MainUiState, MainEvent> by ViewStateDelegateImpl(MainUiState.Idle) {
@@ -68,7 +72,8 @@ class MainViewModel @Inject constructor(
                 MainScreenEvent.ShowCartModal -> {
                     getCartProductsUseCase().resource
                         .onSuccess { cartProducts ->
-                            reduce { MainUiState.ShowCart(cartProducts) }
+                            val totalPrice = computeTotalPriceUseCase(ComputeTotalPriceUseCase.RequestValues(cartProducts)).totalPrice
+                            reduce { MainUiState.ShowCart(cartProducts, totalPrice) }
                         }
                         .onError { message ->
                             Timber.e("Error loading cart products: $message")
@@ -79,11 +84,7 @@ class MainViewModel @Inject constructor(
 
                 }
                 is MainScreenEvent.PurchaseCart -> {
-                    var totalPrice = 0.0
-                    event.cartProducts.forEach {
-                        totalPrice += it.price
-                    }
-                    addNewPurchaseUseCase(AddNewPurchaseUseCase.RequestValues(totalPrice)).resource
+                    addNewPurchaseUseCase(AddNewPurchaseUseCase.RequestValues(event.totalPrice)).resource
                         .onSuccess {
                             emptyCartUseCase().resource
                                 .onSuccess {

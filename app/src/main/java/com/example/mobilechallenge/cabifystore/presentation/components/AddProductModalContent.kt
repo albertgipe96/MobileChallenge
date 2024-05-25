@@ -16,7 +16,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mobilechallenge.cabifystore.domain.model.Product
@@ -31,10 +33,13 @@ import com.example.mobilechallenge.ui.utils.Spacing
 fun AddProductModalContent(
     productToAdd: Product,
     quantity: Int,
+    bestPrice: Double?,
     onAddSelected: () -> Unit,
     onRemoveSelected: () -> Unit,
     onPurchase: () -> Unit
 ) {
+    val realPrice = productToAdd.price * quantity
+    val showDiscount = realPrice != (bestPrice ?: realPrice)
     Column(modifier = Modifier.padding(Spacing.MEDIUM.spacing)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -52,9 +57,20 @@ fun AddProductModalContent(
                     Text(
                         text = productToAdd.name
                     )
-                    Text(
-                        text = "${productToAdd.price}€"
-                    )
+                    Row {
+                        Text(
+                            text = "${realPrice}€",
+                            color = if (showDiscount) Color.Red else Color.Black,
+                            textDecoration = if (showDiscount) TextDecoration.LineThrough else null
+                        )
+                        if (showDiscount) {
+                            Spacer(modifier = Modifier.width(Spacing.SMALL.spacing))
+                            Text(
+                                text = "${bestPrice}€"
+                            )
+                        }
+                    }
+
                 }
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
