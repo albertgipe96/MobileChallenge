@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -13,8 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.mobilechallenge.cabifystore.presentation.components.OfferCard
 import com.example.mobilechallenge.cabifystore.presentation.uistate.HomeUiState
 import com.example.mobilechallenge.cabifystore.presentation.uistate.PurchasesUiState
+import com.example.mobilechallenge.cabifystore.presentation.vm.HomeScreenEvent
 import com.example.mobilechallenge.cabifystore.presentation.vm.HomeViewModel
 import com.example.mobilechallenge.common.ui.components.TopBar
 import com.example.mobilechallenge.common.ui.state.collectWithLifecycle
@@ -41,9 +45,13 @@ fun HomeScreen(
             )
         }
     ) { paddingValues ->
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(Spacing.MEDIUM.spacing)
+                .verticalScroll(rememberScrollState())
+        ) {
             when (val state = uiState) {
                 HomeUiState.Loading -> {
                     CircularProgressIndicator()
@@ -53,9 +61,10 @@ fun HomeScreen(
                 }
                 is HomeUiState.Loaded -> {
                     state.offers.forEach {
-                        Text(text = "code: ${it.productCode}\n" +
-                                "quantityToGetOneFree: ${it.quantityToGetOneFree}\n" +
-                                "discount: ${it.discount?.quantityOrMore}, newPrice: ${it.discount?.discountedPrice}")
+                        OfferCard(
+                            offer = it,
+                            onOfferClick = { viewModel.onEvent(HomeScreenEvent.OfferSelected) }
+                        )
                         Spacer(modifier = Modifier.height(Spacing.MEDIUM.spacing))
                     }
                 }
