@@ -67,6 +67,7 @@ fun HomeScreen(
                         )
                         Spacer(modifier = Modifier.height(Spacing.MEDIUM.spacing))
                     }
+                    Spacer(modifier = Modifier.height(Spacing.EXTRA_LARGE.spacing))
                 }
             }
         }

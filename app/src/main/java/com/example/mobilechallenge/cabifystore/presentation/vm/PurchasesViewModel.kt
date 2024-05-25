@@ -25,7 +25,7 @@ class PurchasesViewModel @Inject constructor(
         viewModelScope.launch {
             getPurchasesUseCase().resource
                 .onSuccess { purchases ->
-                    reduce { PurchasesUiState.Loaded(purchases) }
+                    reduce { PurchasesUiState.Loaded(purchases.sortedByDescending { it.dateInMillis }) }
                 }
                 .onError { message ->
                     reduce { PurchasesUiState.Error(message ?: "Error") }
